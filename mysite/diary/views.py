@@ -27,7 +27,7 @@ def new(request):
 
 def save(request):
     title = request.POST['title']
-    rating = request.POST['rating']
+    rating = int(request.POST['rating'])
     body = request.POST['body']
     pub_date = timezone.now()
 
