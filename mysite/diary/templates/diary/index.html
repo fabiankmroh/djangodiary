@@ -1,0 +1,17 @@
+{% if latest_entry_list %}
+    <ul>
+        {% for entry in latest_entry_list %}
+            <li><a href='/diary/{{ entry.id }}'>{{ entry.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No diaries written yet.</p>
+{% endif %}
+<br></br>
+<br></br>
+<h2>New Entry:</h2>
+
+<form action="{% url 'save' entry_id %}", method="POST">
+    {% csrf_token %}
+    
+</form>
