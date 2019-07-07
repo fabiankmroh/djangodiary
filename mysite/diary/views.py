@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.urls import reverse
 from .models import Entry
+from django.utils import timezone
 
 # Create your views here.
 def index(request):
@@ -13,8 +15,22 @@ def index(request):
     return render(request, 'diary/index.html', context)
 
 def detail(request, entry_id):
-    entry = get_object_or_404(Entry, pk=entry_id)
-    return render(request, 'diary/detail.html', {'entry':entry})
+    try:
+        selected_entry = Entry.objects.get(pk=entry_id)
+    except (KeyError, Entry.DoesNotExist):
+        return render(request, 'diary/error.html',{'id':entry_id})
+    else:
+        return render(request, 'diary/detail.html', {'entry':selected_entry})
 
-def save(request, entry_id):
-    
+def new(request):
+    return render(request, 'diary/new.html')
+
+def save(request):
+    title = request.POST['title']
+    rating = request.POST['rating']
+    body = request.POST['body']
+    pub_date = timezone.now()
+
+    Entry.objects.create(title=title, rating=rating, body=body, pub_date=pub_date)
+
+    return HttpResponseRedirect(reverse('index'))
