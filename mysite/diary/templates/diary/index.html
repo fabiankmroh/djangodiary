@@ -3,7 +3,7 @@
     <ul>
         {% for entry in latest_entry_list %}
             <li><a href='/diary/{{ entry.id }}'>
-                Title: {{ entry.title }}     Rating: {{ entry.rating }} Published Date:{{ entry.pub_date }}</a></li>
+                Title: {{ entry.title }}     Rating: {{ entry.rating }} Published Date:{{ entry.pub_date }}  {{entry.comment_set.count}} comment{{entry.comment_set.count|pluralize}}</a></li>
         {% endfor %}
     </ul>
 {% else %}

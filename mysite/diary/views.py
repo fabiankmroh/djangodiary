@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Entry
+from .models import Entry, Comment
 from django.utils import timezone
 
 # Create your views here.
@@ -15,12 +15,14 @@ def index(request):
     return render(request, 'diary/index.html', context)
 
 def detail(request, entry_id):
-    try:
-        selected_entry = Entry.objects.get(pk=entry_id)
-    except (KeyError, Entry.DoesNotExist):
-        return render(request, 'diary/error.html',{'id':entry_id})
-    else:
-        return render(request, 'diary/detail.html', {'entry':selected_entry})
+    entry = get_object_or_404(Entry, pk=entry_id)  
+    comment_list = entry.comment_set.order_by('-like')
+    
+    return render(request, 'diary/detail.html', {
+        'entry':entry,
+        'entry_id':entry_id,
+        'comment_list':comment_list
+   })
 
 def new(request):
     return render(request, 'diary/new.html')
@@ -34,3 +36,13 @@ def save(request):
     Entry.objects.create(title=title, rating=rating, body=body, pub_date=pub_date)
 
     return HttpResponseRedirect(reverse('index'))
+
+def commentsave(request, entry_id):
+    ctxt = request.POST['ctxt']
+    like = 0
+    pub_date = timezone.now()
+
+    entry = get_object_or_404(Entry, pk=entry_id)
+    entry.comment_set.create(ctxt=ctxt, like=like, pub_date=pub_date)
+
+    return HttpResponseRedirect(reverse('detail', args=(entry_id,)))

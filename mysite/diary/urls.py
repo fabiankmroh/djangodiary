@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:entry_id>', views.detail, name='detail'),
     path('new/', views.new, name='new'),
     path('save/', views.save, name='save'),
+    path('<int:entry_id>/commentsave/', views.commentsave, name='commentsave'),
 ]

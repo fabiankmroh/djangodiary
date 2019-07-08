@@ -1,5 +1,21 @@
 <h1><a href ='/diary'>Fabian's Diary</a></h1>
-<h2>{{ entry.title }}</h2>
-<h3>{{ entry.rating }}</h3>
-<h3>{{ entry.pub_date }}</h3>
-<h4>{{ entry.body }}</h4>
+<h2>Title: {{ entry.title }}</h2>
+<h3>Rating: {{ entry.rating }}</h3>
+<h3>Date Written: {{ entry.pub_date }}</h3>
+<h3>{{ entry.body }}</h3>
+
+
+<h3>New Comment:</h3>
+<form action = "{{ entry_id }}/commentsave/", method="POST">
+    {% csrf_token %}
+    <textarea rows=5 cols=20 name="ctxt"></textarea>
+    <input type="submit" value="submit">
+</form>
+
+<h3>{{ comment_list.count }} Comments:</h3>
+
+<ul>
+{% for comment in comment_list %}
+    <li>{{ comment.ctxt }}</li>
+{% endfor %}
+</ul>
