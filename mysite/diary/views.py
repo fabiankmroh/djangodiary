@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
-from .models import Entry, Comment
 from django.utils import timezone
+from .models import Entry, Comment
 
 # Create your views here.
 def index(request):
@@ -32,6 +34,11 @@ def save(request):
     rating = int(request.POST['rating'])
     body = request.POST['body']
     pub_date = timezone.now()
+
+    if request.method == 'POST':
+        uploaded_file = request.FILES['myfile']
+        fs = FileSystemStorage()
+        fs.save(image, uploaded_file)
 
     Entry.objects.create(title=title, rating=rating, body=body, pub_date=pub_date)
 

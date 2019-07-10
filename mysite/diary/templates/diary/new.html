@@ -1,7 +1,7 @@
 <h1><a href ='/diary'>Fabian's Diary</a></h1>
 <h2>New Entry:</h2>
 
-<form action="{% url 'save' %}", method="POST">
+<form action="{% url 'save' %}", method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <h2>Title:</h2>
     <input type="text" name="title"><br>
@@ -15,9 +15,11 @@
         <option value=5>5</option>
     </select>
 
-    
     <br>
     <h3>Text:</h3>
     <textarea rows="7" cols="50" name="body"></textarea>
+
+    <input type="file" name="myfile">
+
     <input type="submit" value="submit">
 </form>
