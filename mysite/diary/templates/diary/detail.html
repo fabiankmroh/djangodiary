@@ -1,8 +1,15 @@
+{% load static %}
 <h1><a href ='/diary'>Fabian's Diary</a></h1>
 <h2>Title: {{ entry.title }}</h2>
 <h3>Rating: {{ entry.rating }}</h3>
 <h3>Date Written: {{ entry.pub_date }}</h3>
 <h3>{{ entry.body }}</h3>
+
+{% block content %}
+{% if entry.image %}
+<img src = "/media/{{ entry.title }}" alt="{{ entry.title }}">
+{% endif %}
+{% endblock %}
 
 
 <h3>New Comment:</h3>

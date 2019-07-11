@@ -38,9 +38,9 @@ def save(request):
     if request.method == 'POST':
         uploaded_file = request.FILES['myfile']
         fs = FileSystemStorage()
-        fs.save(image, uploaded_file)
+        fs.save(title, uploaded_file)
 
-    Entry.objects.create(title=title, rating=rating, body=body, pub_date=pub_date)
+    Entry.objects.create(title=title, rating=rating, body=body, image=uploaded_file, pub_date=pub_date)
 
     return HttpResponseRedirect(reverse('index'))
 
